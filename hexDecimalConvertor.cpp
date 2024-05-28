@@ -3,7 +3,9 @@ using namespace std;
 
 #define ll long long
 
-ll translateFromHexToDec(char a);
+char translateFromNumToAlpha(ll a);
+string convertFromDecimalToHexDecimal(string input);
+ll translateFromAlphaToNum(char a);
 string getInput();
 string convertFromHexDecimalToDecimal(string input);
 ll getChooseOptionFromUser();
@@ -23,6 +25,10 @@ int main() {
 
         if (chooseOption == 1){
             result = convertFromHexDecimalToDecimal(input);
+        }
+
+        else if(chooseOption == 2){
+            result = convertFromDecimalToHexDecimal(input);
         }
 
         printResultNumber(result);
@@ -52,7 +58,7 @@ string getInput(){
     return number;
 }
 
-ll translateFromHexToDec(char a){
+ll translateFromAlphaToNum(char a){
     if (isalpha(a)){
         return a - '7';
     }
@@ -67,10 +73,31 @@ string convertFromHexDecimalToDecimal(string input){
     ll base = 16;
     for (int i = input.size()-1; i >= 0;i--){
         input[i] = toupper(input[i]);
-        resultNumber += pow(base,currPower)*translateFromHexToDec(input[i]);
+        resultNumber += pow(base,currPower)*translateFromAlphaToNum(input[i]);
         currPower++;
     }
     return to_string(resultNumber);
+}
+
+char translateFromNumToAlpha(ll a){
+    if (a >= 10 && a <= 15){
+        return a + '7';
+    }
+    else{
+        return a + '0';
+    }
+}
+
+string convertFromDecimalToHexDecimal(string input){
+    ll inputLl = stoll(input);
+    string resultNumber;
+    ll base = 16;
+    while (inputLl != 0){
+        resultNumber += translateFromNumToAlpha(inputLl % base);
+        inputLl /= base;
+    }
+    reverse(resultNumber.begin(), resultNumber.end());
+    return resultNumber;
 }
 
 void printResultNumber (string resultNumber){
